@@ -7,7 +7,7 @@ public class StringCalculator
     {
         if (CheckInputHasDelimiters(input))
         {
-            string[] delimiters = GetDelimiters(input);
+            string[] delimiters = GetAllDelimiters(input);
             string numbers = input.Substring(input.IndexOf("\n") + 1);
             
             return Sum(numbers, delimiters);
@@ -29,6 +29,34 @@ public class StringCalculator
         return input.IndexOf("//") == 0;
     }
 
+    private string[] GetAllDelimiters(string input)
+    {
+
+        string[] delimiters = new string[5];
+        int startIndex = 0;
+        int endIndex = 0;
+        int arrIndex = 0;
+
+        //Multiple delimiters with multiple characters
+        if (input.IndexOf("[") > 0) 
+        {
+            while (endIndex < input.IndexOf("\n") - 1)
+            {
+                startIndex = input.IndexOf("[", endIndex);
+                endIndex = input.IndexOf("]", startIndex);
+                delimiters[arrIndex] = input.Substring(startIndex + 1, endIndex - startIndex - 1);
+                arrIndex++;
+
+            }
+        }
+        else //single character delimiter
+        {
+            startIndex = input.IndexOf("//");
+            endIndex = input.IndexOf("\n");
+            delimiters[0] = input.Substring(startIndex + 2, 1);
+        }
+        return delimiters;
+    }
     private bool CheckInputIsString(string input)
     {
         if (input.Any(char.IsDigit))
@@ -62,35 +90,6 @@ public class StringCalculator
             throw new ArgumentException("Negatives not allowed: " + string.Join(", ", negativeNumbers));
 
         return false;
-    }
-
-    private string[] GetDelimiters(string input)
-    {
-
-        string[] delimiters = new string[5];
-        int startIndex = 0;
-        int endIndex = 0;
-        int arrIndex = 0;
-
-        if (input.IndexOf("[") > 0) //Multiple characters delimiters
-        {
-            while (endIndex < input.IndexOf("\n") - 1)
-            {
-                startIndex = input.IndexOf("[", endIndex);
-                endIndex = input.IndexOf("]", startIndex);
-                delimiters[arrIndex] = input.Substring(startIndex + 1, endIndex - startIndex - 1);
-                arrIndex++;
-
-            }
-        }
-        else //single character delimiter
-        {
-            startIndex = input.IndexOf("//");
-            endIndex = input.IndexOf("\n");
-            Console.WriteLine(startIndex + "  " + endIndex);
-            delimiters[0] = input.Substring( startIndex + 2, 1);
-        }
-        return delimiters;
     }
 
     public void main(string[] args){ }
