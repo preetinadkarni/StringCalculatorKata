@@ -37,8 +37,7 @@ public class StringCalculator
         int endIndex = 0;
         int arrIndex = 0;
 
-        //Multiple delimiters with multiple characters
-        if (input.IndexOf("[") > 0) 
+        if (CheckInputHasMultipleDelimiters(input)) 
         {
             while (endIndex < input.IndexOf("\n") - 1)
             {
@@ -49,7 +48,7 @@ public class StringCalculator
 
             }
         }
-        else //single character delimiter
+        else 
         {
             startIndex = input.IndexOf("//");
             endIndex = input.IndexOf("\n");
@@ -57,6 +56,14 @@ public class StringCalculator
         }
         return delimiters;
     }
+
+    private bool CheckInputHasMultipleDelimiters(string input)
+    {
+        if (input.IndexOf("[") > 0)
+            return true;
+        return false;
+    }
+
     private bool CheckInputIsString(string input)
     {
         if (input.Any(char.IsDigit))
