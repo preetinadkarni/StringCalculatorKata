@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 public class StringCalculator
 {
@@ -13,20 +14,28 @@ public class StringCalculator
         }
         else
         {
-            int i = 0;
-            bool isInt = int.TryParse(input, out i);
-            int hasMultipleNumbers = input.IndexOf(",");
-
-            if (!isInt && hasMultipleNumbers < 0) // if string return a number
+            if (CheckInputIsString(input))
                 return 0;
-            if (isInt)
-                return i;
-
             string[] delimiterChars = { ",", "\n" };
+           
             return Sum(input,delimiterChars);
         }
 
         
+    }
+
+    private bool CheckInputHasDelimiters(string input)
+    {
+        return input.IndexOf("//") == 0;
+    }
+
+    private bool CheckInputIsString(string input)
+    {
+        if (input.Any(char.IsDigit))
+            return false;
+
+        return true;
+
     }
 
     private int Sum(string numbersString, string[] delimiters)
@@ -44,12 +53,7 @@ public class StringCalculator
         }
         return sum;
     }
-
-    private bool CheckInputHasDelimiters(string input)
-    {
-        return input.IndexOf("//") == 0;
-    }
-
+           
     private bool CheckInputHasNoNegativeNumbers(int[] numbers)
     {
         int[] negativeNumbers = Array.FindAll(numbers, e => e < 0);
